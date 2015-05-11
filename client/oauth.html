@@ -1,4 +1,15 @@
 <template name="oauth" >
 
-<h1>return from login with code</h1>
+<h1>return from Google login with auth code</h1>
+
+{{#if code}}
+    The code is: {{code}}
+    <br />
+    <br />
+    <input type="button" id="getTokensButton" value="Request auth tokens" >
+    <br />
+{{else}}
+    The auth code was not found. Try <a href="{{pathFor 'login'}}">logging in again</a>.
+    <br />
+{{/if}}
 </template>

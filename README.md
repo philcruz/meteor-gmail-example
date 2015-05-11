@@ -6,3 +6,7 @@ https://developers.google.com/gmail/api/overview
 Packages used:
     iron:router
     http
+    
+Update the settings.json and start the app like:
+
+meteor run --settings settings.json

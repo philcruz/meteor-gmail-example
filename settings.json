@@ -1,0 +1,9 @@
+{
+    "public": {
+        "client_id":    "your-client-id",
+        "redirect_uri": "your-redirect-uri",
+        "scope":        "https://www.googleapis.com/auth/gmail.modify"
+    },
+    "account":          "example@domain.com",
+    "client_secret":    "your-client-secret"
+}
