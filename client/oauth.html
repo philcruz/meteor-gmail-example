@@ -8,6 +8,9 @@
     <br />
     <input type="button" id="getTokensButton" value="Request auth tokens" >
     <br />
+    <br />
+    Once you have the auth tokens, try <a href="{{pathFor 'gmail'}}">accessing Gmail</a>.
+    <br />    
 {{else}}
     The auth code was not found. Try <a href="{{pathFor 'login'}}">logging in again</a>.
     <br />
