@@ -89,8 +89,8 @@ Meteor.methods({
         return result.data;
     },
     
-    searchGmail: function(query){
-        console.log("in searchGmail...");
+    listThreads: function(query){
+        console.log("in listThreads...");
         console.log(query);
         this.unblock();            
         var tokens = Tokens.findOne();            
@@ -102,6 +102,46 @@ Meteor.methods({
                 }
             });
             return result.data;
+        } catch(error){
+            return error;
+        }
+    },
+    
+    listMessages: function(query){
+        console.log("in listMessages...");
+        console.log(query);
+        this.unblock();            
+        var tokens = Tokens.findOne();            
+        var apiUrl = "https://www.googleapis.com/gmail/v1/users/me/messages";
+        if (query.length)
+            apiUrl = apiUrl + "?q=" + query;
+        try {
+            var result = HTTP.get( apiUrl, {
+                params: {
+                    'access_token': tokens.accessToken
+                }
+            });
+            console.log(result);
+            return result.data;
+        } catch(error){
+            return error;
+        }
+    },
+    
+    getMessage: function(messageID){
+        console.log("in getMessage...");
+        console.log(messageID);
+        this.unblock();            
+        var tokens = Tokens.findOne();            
+        var apiUrl = "https://www.googleapis.com/gmail/v1/users/me/messages/" + messageID;
+        try {
+            var result = HTTP.get( apiUrl, {
+                params: {
+                    'access_token': tokens.accessToken
+                }
+            });
+            console.log(result);
+            return result;
         } catch(error){
             return error;
         }

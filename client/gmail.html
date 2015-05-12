@@ -1,13 +1,20 @@
 <template name="gmail">
 <input type="text" id="search" value="label:inbox" >
-<input type="button" id="searchGmailButton" value="Search Gmail" >
-
+<input type="button" id="listThreadsButton" value="List Threads" >
+<input type="button" id="listMessagesButton" value="List Messages" >
 <br />
-For example:
+    
+<br />
+<br />
+Search syntax examples:
 <ul>
     <li>"in:inbox" - messages in the inbox</li>
     <li>"label:family" - messages labeled family</li>
     <li>"subject:dinner" - messages with dinner in the subject</li>
 </ul>
 <a href="https://support.google.com/mail/answer/7190?hl=en">Gmail Help on Advanced Search Syntax</a>
+<br />
+<br />
+<input type="text" id="messageID" value="enter message-id" >
+<input type="button" id="getMessageButton" value="Get Message" >
 </template>
