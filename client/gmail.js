@@ -54,6 +54,19 @@ Template.gmail.events({
                 console.log(error);
             }
         });
+    },
+    
+    'click #archiveMessageButton': function(){        
+        var messageID = $('#messageID').val();
+        Meteor.call("archiveMessage", messageID, function(error, results) {            
+            if (error){
+                console.log("Problem calling archiveMessage...try refreshing the access token.");
+                console.log(error);
+            } else {
+                console.log("message archived..");
+                console.log(results);
+            }
+        });
     }
 
 });

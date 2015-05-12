@@ -154,7 +154,7 @@ Meteor.methods({
             var result = HTTP.get( apiUrl, {
                 params: {
                     'access_token': tokens.accessToken
-                }
+                }                
             });
             console.log(result);
             return result;
@@ -178,6 +178,25 @@ Meteor.methods({
             console.log(result);
             return result;
         } catch(error){
+            return error;
+        }
+    },
+    
+    archiveMessage: function(messageID){
+        console.log("in archiveMessage...");
+        console.log(messageID);
+        this.unblock();            
+        var tokens = Tokens.findOne();            
+        var apiUrl = "https://www.googleapis.com/gmail/v1/users/me/messages/" + messageID + "/modify";
+        try {
+            var result = HTTP.post( apiUrl, {
+                data: { "removeLabelIds": ["INBOX"] },
+                headers:{"content-type":"application/json ; charset=UTF-8", "Authorization": "Bearer " + tokens.accessToken }
+            });
+            console.log("result:" + result);
+            return result;
+        } catch(error){
+            console.log("error:" + error);
             return error;
         }
     }
