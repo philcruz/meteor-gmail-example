@@ -26,21 +26,12 @@ Template.gmail.events({
     
      'click #getMessageButton': function(){        
         var messageID = $('#messageID').val();
-        Meteor.call("getMessage", messageID, function(error, results) {
-            console.log(results);
-            var extractField = function(json, fieldName) {
-                return json.payload.headers.filter(function(header) {
-                return header.name === fieldName;
-                })[0];
-            };
-            var date = extractField(results.data, "Date");
-            var subject = extractField(results.data, "Subject");
-            var body = results.data.payload.parts[0].body.data;
-            console.log("Subject:" + subject.value );
-            console.log("Body:" + atob(body) );
+        Meteor.call("getMessage", messageID, function(error, results) {                    
             if (error){
                 console.log("Problem calling getMessage...try refreshing the access token.");
                 console.log(error);
+            } else {
+                console.log(results);
             }
         });
     },
@@ -67,7 +58,20 @@ Template.gmail.events({
                 console.log(results);
             }
         });
+    },
+    
+    'click #importFromInboxButton': function(){        
+        Meteor.call("importFromInbox", function(error, results) {            
+            if (error){
+                console.log("Problem calling importFromInbox...try refreshing the access token.");
+                console.log(error);
+            } else {
+                console.log("inbox was processed..");
+                console.log(results);
+            }
+        });
     }
+
 
 });
 

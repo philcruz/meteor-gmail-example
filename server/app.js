@@ -13,6 +13,14 @@ if ( Tokens.find().count() === 0 ){
     );    
 }
 
+//atob() function to decode base64 is only available on the client.
+//use the Base64 package and use .decode() but that returns a Uint8Array
+//so use this function to convert Uint8Array to string
+function uintToString(uintArray) {
+    var encodedString = String.fromCharCode.apply(null, uintArray),
+        decodedString = decodeURIComponent(escape(encodedString));
+    return decodedString;
+}
 
 Meteor.methods({
     
@@ -155,9 +163,19 @@ Meteor.methods({
                 params: {
                     'access_token': tokens.accessToken
                 }                
-            });
-            console.log(result);
-            return result;
+            });                        
+            var extractField = function(json, fieldName) {
+                return json.payload.headers.filter(function(header) {
+                return header.name === fieldName;
+                })[0];
+            };
+            var message = {
+                'messageID':messageID,
+                'date':     extractField(result.data, "Date"),
+                'subject':  extractField(result.data, "Subject").value,
+                'body':     uintToString(Base64.decode(result.data.payload.parts[0].body.data))
+            };
+            return message;
         } catch(error){
             return error;
         }
@@ -199,7 +217,33 @@ Meteor.methods({
             console.log("error:" + error);
             return error;
         }
+    },
+    
+    importFromInbox: function(){
+        console.log("in importFromInbox...");
+        var result = "";
+        //get messages
+        var inbox = Meteor.call('listMessages', 'label:inbox');
+        if (inbox.messages && inbox.messages.length)
+        {
+            for (var i = 0; i < inbox.messages.length; i++) {    
+                //get the message
+                console.log("processing messageID: " + inbox.messages[i].id);
+                var message = Meteor.call('getMessage', inbox.messages[i].id);
+                //TODO: import it in the database
+                //for now just log it
+                console.log(message);
+                //archive it
+                var archive = Meteor.call('archiveMessage', inbox.messages[i].id);
+            }
+            result = inbox.messages.length + " messages processed";
+        } else {
+            result = "No messages to import";
+        }
+        return result;
+        
     }
+
 
     
 });
