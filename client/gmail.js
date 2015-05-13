@@ -70,6 +70,30 @@ Template.gmail.events({
                 console.log(results);
             }
         });
+    },
+    
+    'click #startPollingInboxButton': function(){        
+        Meteor.call("startPollingInbox", 10, function(error, results) {            
+            if (error){
+                console.log("Problem calling startPollingInbox...");
+                console.log(error);
+            } else {
+                console.log("starting to poll Inbox..");
+                console.log(results);
+            }
+        });
+    },
+    
+    'click #stopPollingInboxButton': function(){        
+        Meteor.call("stopPollingInbox", function(error, results) {            
+            if (error){
+                console.log("Problem calling stopPollingInbox...");
+                console.log(error);
+            } else {
+                console.log("stopped polling Inbox..");
+                console.log(results);
+            }
+        });
     }
 
 

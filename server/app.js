@@ -1,3 +1,5 @@
+var pollingTaskID;
+
 if ( Tokens.find().count() === 0 ){
 
     Tokens.upsert(
@@ -125,9 +127,7 @@ Meteor.methods({
                 return result.data;
             } else {
                 throw new Meteor.Error(400, error.message);
-            }
-            
-            
+            }                        
         }
     },
     
@@ -240,11 +240,20 @@ Meteor.methods({
         } else {
             result = "No messages to import";
         }
-        return result;
-        
+        return result;        
+    },
+    
+    startPollingInbox: function(seconds){
+        pollingTaskID = Meteor.setInterval(function(){
+            Meteor.call('importFromInbox');
+        }, seconds*1000);
+        return "polling started...";
+    },
+    
+    stopPollingInbox: function(){        
+        Meteor.clearInterval(pollingTaskID);
+        return "polling stopped...";
     }
-
-
     
 });
 
